@@ -1,9 +1,5 @@
 pragma solidity ^0.4.11;
-
-
 import "./Ownable.sol";
-
-
 /**
  * @title Pausable
  * @dev Base contract which allows children to implement an emergency stop mechanism.
@@ -11,10 +7,7 @@ import "./Ownable.sol";
 contract Pausable is Ownable {
   event Pause();
   event Unpause();
-
   bool public paused = true;
-
-
   /**
    * @dev modifier to allow actions only when the contract IS paused
    */
@@ -22,7 +15,6 @@ contract Pausable is Ownable {
     assert(paused!=true);
     _;
   }
-
   /**
    * @dev modifier to allow actions only when the contract IS NOT paused
    */
@@ -30,7 +22,6 @@ contract Pausable is Ownable {
     assert(paused==true);
     _;
   }
-
   /**
    * @dev called by the owner to pause, triggers stopped state
    */
@@ -39,7 +30,6 @@ contract Pausable is Ownable {
     Pause();
     return true;
   }
-
   /**
    * @dev called by the owner to unpause, returns to normal state
    */
@@ -48,6 +38,4 @@ contract Pausable is Ownable {
     Unpause();
     return true;
   }
-  
-  
 }

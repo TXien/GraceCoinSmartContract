@@ -4,27 +4,19 @@ import "./SafeMath.sol";
 import "./ethPausable.sol";
 
 contract GraceCoin is StandardToken, SafeMath, ethPausable {
-    // metadata
     string public constant name = "Grace Coin";
     string public constant symbol = "GRACE";
     uint256 public constant decimals = 8;
     string public version = "1.0";
-    // contracts
     address public G2UFundDeposit;
     address public ETHFundDeposit;
     address public GraceFund;
- 
-    // crowdsale parameters
     uint256 public constant G2Ufund = 6300*10000*10**decimals;
-    uint256 public buyExchangeRate = 1*10**8; // 80 G2U tokens per 1 ETH
-    uint256 public sellExchangeRate = 1*10**8; // 1 G2U tokens per 0.0125 ETH
+    uint256 public buyExchangeRate = 1*10**8; // per 1 ETH buy 1 Grace Coin  
+    uint256 public sellExchangeRate = 1*10**8; // per 1 Grace Coin buy 1 ETH
     uint256 public constant ETHfund= 2100*10000*10**decimals;
-
-    // events
     event LogRefund(address indexed _to, uint256 _value);
     event CreateBAT(address indexed _to, uint256 _value);
-
-    // constructor
     function GraceCoin()
     {
       G2UFundDeposit = 0xf03d707298c78c4504ba7da5aedf52f18e7b7d95;
@@ -32,33 +24,18 @@ contract GraceCoin is StandardToken, SafeMath, ethPausable {
       totalSupply = G2Ufund+ETHfund;
       balances[G2UFundDeposit] = G2Ufund;
       balances[ETHFundDeposit] = ETHfund;
-      CreateBAT(G2UFundDeposit, G2Ufund);  // logs Brave Intl fund
+      CreateBAT(G2UFundDeposit, G2Ufund);
     }
-
-    //function changeG2UFundDeposit(address NewG2UFundDeposit)
-    //{
-    //    assert(msg.sender == G2UFundDeposit);
-    //    G2UFundDeposit = NewG2UFundDeposit;
-    //}
-    //function changeETHFundDeposit(address NewETHFundDeposit)
-    //{
-    //    assert(msg.sender == ETHFundDeposit);
-    //    ETHFundDeposit = NewETHFundDeposit;        
-    //}
-
-
     function setBuyExchangeRate(uint rate) returns(uint){
         assert(msg.sender==owner);
         buyExchangeRate = rate;
         return rate;
     }
-
     function setSellExchangeRate(uint rate) returns(uint){
         assert(msg.sender==owner);
         sellExchangeRate = rate;
         return rate;
     }
-
     function buyCoins() ethwhenNotPaused payable external {
         uint256 tokens = safeMult(msg.value, buyExchangeRate)/(10**18); 
         assert(balances[ETHFundDeposit]>=tokens);
@@ -77,17 +54,14 @@ contract GraceCoin is StandardToken, SafeMath, ethPausable {
     function getBalance() constant returns(uint){
         return this.balance;  
     }
-    
     function getEther(uint balancesNum){
-        assert(msg.sender != G2UFundDeposit);
+        assert(msg.sender == G2UFundDeposit);
         assert(balancesNum <= this.balance);
         G2UFundDeposit.transfer(balancesNum);
     }
-
     function putEther() payable returns(bool){
         return true;
     }
-
     function graceTransfer(address _to, uint256 _value) returns (bool success) {
       assert(msg.sender==G2UFundDeposit||msg.sender==ETHFundDeposit||msg.sender==owner);
       if (balances[msg.sender] >= _value && _value > 0) {
@@ -101,4 +75,3 @@ contract GraceCoin is StandardToken, SafeMath, ethPausable {
     }
 
 }
-
