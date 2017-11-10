@@ -49,6 +49,7 @@ contract GraceCoin is StandardToken, SafeMath, ethPausable {
         assert(etherAmount <= this.balance);
         msg.sender.transfer(etherAmount);
         balances[msg.sender] = safeSubtract(balances[msg.sender],G2Uamount);
+        balances[ETHFundDeposit] += G2Uamount;
         Transfer(msg.sender, ETHFundDeposit, G2Uamount);
     }
     function getBalance() constant returns(uint){
