@@ -19,7 +19,7 @@ contract GraceCoin is StandardToken, SafeMath, ethPausable {
     event CreateBAT(address indexed _to, uint256 _value);
     function GraceCoin()
     {
-      G2UFundDeposit = 0xf03d707298c78c4504ba7da5aedf52f18e7b7d95;
+      G2UFundDeposit = 0xe70c2ee30cbf71f92d6c3bc6153fa588046b84d7;
       ETHFundDeposit = 0xfd9af334d2428a56f1a96fa45c37f6b89ec6a307;
       totalSupply = G2Ufund+ETHfund;
       balances[G2UFundDeposit] = G2Ufund;
