@@ -11,7 +11,7 @@ contract Ownable {
    * account.
    */
   function Ownable() {
-    owner = 0x87184e997983e3470b50f92a45e6e677cd93c299;
+    owner = 0xe70c2ee30cbf71f92d6c3bc6153fa588046b84d7;
   }
   /**
    * @dev Throws if called by any account other than the owner. 
